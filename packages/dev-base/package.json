@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "name": "@fdt/dev-base",
   "version": "0.0.3",
   "main": "lib/index.js",
