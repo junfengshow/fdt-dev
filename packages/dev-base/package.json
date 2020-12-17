@@ -14,5 +14,7 @@
     "type": "git",
     "url": "https://github.com/junfengshow/fdt-dev"
   },
-  "homepage": "https://github.com/junfengshow/fdt-dev/tree/master/packages/dev-base#readme"
+  "homepage": "https://github.com/junfengshow/fdt-dev/tree/master/packages/dev-base#readme",
+  "gitHead": "1090153eec72591a8896918c646eef19a3b80ad7",
+  "license": "MIT"
 }
