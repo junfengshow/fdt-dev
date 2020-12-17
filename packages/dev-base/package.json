@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@fdt/dev-base",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
