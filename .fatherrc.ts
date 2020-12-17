@@ -1,5 +1,5 @@
 export default {
-  pkgs: ['fdt-dev-base', 'fdt-dev-react'],
+  // pkgs: ['dev-base', 'dev-react'],
   target: 'node',
   disableTypeCheck: true,
   cjs: {

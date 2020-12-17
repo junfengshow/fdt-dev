@@ -20,4 +20,5 @@
 .umi-test
 .env.local
 
-es
+/packages/*/lib
+/packages/*/es

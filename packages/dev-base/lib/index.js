@@ -5,50 +5,27 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.Main = void 0;
 
+function _react() {
+  const data = _interopRequireDefault(require('react'));
+
+  _react = function _react() {
+    return data;
+  };
+
+  return data;
+}
+
 var _Config = _interopRequireDefault(require('./Config'));
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError('Cannot call a class as a function');
+class Main {
+  init() {
+    const config = new _Config.default();
+    return config;
   }
 }
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ('value' in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-var Main = /*#__PURE__*/ (function() {
-  function Main() {
-    _classCallCheck(this, Main);
-  }
-
-  _createClass(Main, [
-    {
-      key: 'init',
-      value: function init() {
-        var config = new _Config.default();
-        return config;
-      },
-    },
-  ]);
-
-  return Main;
-})();
 
 exports.Main = Main;

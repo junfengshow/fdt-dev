@@ -5,17 +5,25 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.default = void 0;
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError('Cannot call a class as a function');
-  }
+function _react() {
+  const data = _interopRequireDefault(require('react'));
+
+  _react = function _react() {
+    return data;
+  };
+
+  return data;
 }
 
-var Config = function Config() {
-  _classCallCheck(this, Config);
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
-  this.name = 'config';
-};
+class Config {
+  constructor() {
+    this.name = 'config';
+  }
+}
 
 var _default = Config;
 exports.default = _default;

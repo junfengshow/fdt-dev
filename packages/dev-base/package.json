@@ -9,5 +9,10 @@
     "lib",
     "bin",
     "templates"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/junfengshow/fdt-dev"
+  },
+  "homepage": "https://github.com/junfengshow/fdt-dev/tree/master/packages/dev-base#readme"
 }
