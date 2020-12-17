@@ -1,5 +1,4 @@
 {
-  "private": false,
   "name": "@fdt/dev-base",
   "version": "0.0.5",
   "main": "lib/index.js",
@@ -16,5 +15,8 @@
   },
   "homepage": "https://github.com/junfengshow/fdt-dev/tree/master/packages/dev-base#readme",
   "gitHead": "1090153eec72591a8896918c646eef19a3b80ad7",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }
