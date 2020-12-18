@@ -1,6 +1,6 @@
 {
   "name": "@fdt/dev-base",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
@@ -20,11 +20,12 @@
     "access": "public"
   },
   "keywords": [
-    "webpack", "awesome-typescript-loader", "@fdt/dev-base"
+    "webpack",
+    "awesome-typescript-loader",
+    "@fdt/dev-base"
   ],
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
-    "typescript": "^3.7.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^5.0.0",
@@ -40,6 +41,7 @@
     "raw-loader": "^4.0.2",
     "sass-loader": "^10.0.4",
     "style-loader": "^2.0.0",
+    "typescript": "^3.7.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.2.0",
     "webpack-dev-middleware": "^3.7.2",
