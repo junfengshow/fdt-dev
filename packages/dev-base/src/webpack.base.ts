@@ -8,30 +8,48 @@ import {
   RuleSetRule,
   Configuration,
 } from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import DefaultConfig from './config.default';
-// const { joinPath } = require('./utils')
-// const projectConfig = require('./project.config')
-// // const webpack = require('webpack')
-// const { CheckerPlugin } = require('awesome-typescript-loader')
 
-// type BaseConfig = {
-//   ISDEV: boolean
-// }
-
-class WebpackBaseConfig {
-  config: Configuration = new DefaultConfig();
-
-  constructor() {
-    // this.config = {}
+class WebpackBaseConfig extends DefaultConfig {
+  constructor(params: any) {
+    super(params);
+    const { cwd } = params;
+    // 配置 html plugin
+    this.setHtmlConfig({ cwd });
+    // 配置js相关
+    this.setJsConfig({ cwd });
   }
-  // 初始化默认配置
-  async initDefaultConfig() {
-    return {};
+
+  setHtmlConfig({ cwd }: any) {
+    if (!Array.isArray(this.plugins)) {
+      return;
+    }
+    this.plugins.push(
+      new HtmlWebpackPlugin({
+        template: 'src/index.html',
+      }),
+    );
   }
-  getConfig() {
-    // return configs
-    this.config.cache = false;
-    return this.config;
+
+  setJsConfig({ cwd }: any) {
+    if (!this.module || !Array.isArray(this.module.rules)) {
+      return;
+    }
+    console.log(cwd);
+    let tsconfigFile = cwd + '/tsconfig.json';
+    this.module.rules.push({
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'awesome-typescript-loader',
+          options: {
+            configFile: tsconfigFile,
+          },
+        },
+      ],
+    });
   }
 }
 export default WebpackBaseConfig;

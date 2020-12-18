@@ -19,7 +19,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "webpack": "^5.2.0"
+  "devDependencies": {
+    "webpack": "^5.2.0",
+    "html-webpack-plugin": "^5.0.0-alpha.17",
+    "awesome-typescript-loader": "^5.2.1"
   }
 }
