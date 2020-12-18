@@ -19,7 +19,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
     "html-webpack-plugin": "^5.0.0-alpha.17",
     "webpack": "^5.2.0"
