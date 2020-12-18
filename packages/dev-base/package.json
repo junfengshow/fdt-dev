@@ -1,6 +1,6 @@
 {
   "name": "@fdt/dev-base",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
@@ -20,8 +20,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "webpack": "^5.2.0",
+    "awesome-typescript-loader": "^5.2.1",
     "html-webpack-plugin": "^5.0.0-alpha.17",
-    "awesome-typescript-loader": "^5.2.1"
+    "webpack": "^5.2.0"
   }
 }
