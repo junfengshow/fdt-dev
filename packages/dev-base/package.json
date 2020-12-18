@@ -20,9 +20,7 @@
     "access": "public"
   },
   "keywords": [
-    "frontend",
-    "webpack",
-    "dev-base"
+    "webpack", "awesome-typescript-loader", "@fdt/dev-base"
   ],
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",

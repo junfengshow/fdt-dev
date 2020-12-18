@@ -12,8 +12,9 @@ type EntryType = {
 };
 
 class DefaultConfig {
+  // webpack 默认配置
   entry: EntryType = {
-    main: ['./src/main.js'],
+    fdt: ['./src/main.js'],
   };
   mode: 'development' | 'production' | 'none' | undefined = 'production';
   output: OutputType = {

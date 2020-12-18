@@ -2,8 +2,6 @@
  *
  * 主配置文件
  */
-// import webpack from 'webpack';
-// import AppConfig from './app.config';
 import AppDev from './app.dev';
 import AppProd from './app.prod';
 
@@ -11,13 +9,12 @@ import { InitTypes } from './typings/app.types';
 
 class AppMain {
   cwd: string = process.cwd();
-  // appConfig = new AppConfig();
   appDev: any = null;
   appProd: any = null;
 
   start(params: InitTypes) {
     params.cwd = this.cwd;
-
+    // 根据mode不同初始化不同的配置
     if (params.mode === 'development') {
       this.appDev = new AppDev(params);
       this.appDev.start();
@@ -37,12 +34,12 @@ class AppMain {
   }
 }
 
-function appDev() {
+export function appDev() {
   new AppMain().dev();
 }
-function appBuild() {
+export function appBuild() {
   new AppMain().build();
 }
 
-export { AppMain, appDev, appBuild };
+export { AppMain };
 export default AppMain;
