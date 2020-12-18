@@ -1,3 +1,3 @@
-import AppMain from './app.main';
+import { AppMain, appBuild, appDev } from './app.main';
 // ...
-export default AppMain;
+export { AppMain, appBuild, appDev };

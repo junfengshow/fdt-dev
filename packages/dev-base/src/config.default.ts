@@ -6,8 +6,15 @@ import { OutputType } from './typings/app.types';
 type ModuleType = {
   rules: Array<any>;
 };
+
+type EntryType = {
+  [propName: string]: any;
+};
+
 class DefaultConfig {
-  entry: string = './src/main.js';
+  entry: EntryType = {
+    main: ['./src/main.js'],
+  };
   mode: 'development' | 'production' | 'none' | undefined = 'production';
   output: OutputType = {
     filename: '[name].[chunkhash:6].js',
