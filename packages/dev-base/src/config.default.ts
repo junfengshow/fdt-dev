@@ -13,9 +13,7 @@ type EntryType = {
 
 class DefaultConfig {
   // webpack 默认配置
-  entry: EntryType = {
-    fdt: ['./src/main.js'],
-  };
+  entry: EntryType = {};
   mode: 'development' | 'production' | 'none' | undefined = 'production';
   output: OutputType = {
     filename: '[name].[chunkhash:6].js',
@@ -34,6 +32,7 @@ class DefaultConfig {
   // 外部传入的参数
   constructor(params: any) {
     const { cwd } = params;
+    // 输出配置
     this.output.path = cwd + '/dist';
   }
 }

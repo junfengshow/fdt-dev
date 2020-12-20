@@ -8,6 +8,7 @@ import {
   RuleSetRule,
   Configuration,
 } from 'webpack';
+import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import DefaultConfig from './config.default';
@@ -15,7 +16,10 @@ import DefaultConfig from './config.default';
 class WebpackBaseConfig extends DefaultConfig {
   constructor(params: any) {
     super(params);
+    console.log('webpackBaseConfig params: ', params);
     const { cwd, ISDEV } = params;
+    // 入口配置
+    this.setEntry(cwd);
     // 配置 html plugin
     this.setHtmlConfig({ cwd });
     // 配置js相关
@@ -28,13 +32,32 @@ class WebpackBaseConfig extends DefaultConfig {
     this.setFontConfig();
   }
 
+  setEntry(cwd: string) {
+    let mainBaseFile = cwd + '/src/main';
+    let mainFile;
+    if (fs.existsSync(mainBaseFile + '.js')) {
+      mainFile = mainBaseFile + '.js';
+    } else if (fs.existsSync(mainBaseFile + '.ts')) {
+      mainFile = mainBaseFile + '.ts';
+    }
+    if (mainFile) {
+      this.entry.fdt = Array.isArray(this.entry.fdt)
+        ? this.entry.fdt.push(mainFile)
+        : [mainFile];
+    }
+  }
+
   setHtmlConfig({ cwd }: any) {
     if (!Array.isArray(this.plugins)) {
       return;
     }
+    let htmlFilepath = cwd + '/src/index.html';
+    if (!fs.existsSync(htmlFilepath)) {
+      return;
+    }
     this.plugins.push(
       new HtmlWebpackPlugin({
-        template: 'src/index.html',
+        template: htmlFilepath,
       }),
     );
   }
@@ -44,8 +67,26 @@ class WebpackBaseConfig extends DefaultConfig {
       return;
     }
 
+    // js 使用babel编译 todo
+    this.module.rules.push({
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
+      ],
+    });
+
     // ts 支持
     let tsconfigFile = cwd + '/tsconfig.json';
+    if (!fs.existsSync(tsconfigFile)) {
+      return;
+    }
     this.module.rules.push({
       test: /\.tsx?$/,
       exclude: /node_modules/,
@@ -58,15 +99,6 @@ class WebpackBaseConfig extends DefaultConfig {
         },
       ],
     });
-
-    // js 使用babel编译 todo
-    // this.module.rules.push({
-    //   test: /\.js$/,
-    //   exclude: /node_modules/,
-    //   use: [
-
-    //   ]
-    // })
   }
 
   setStyleConfig({ cwd, ISDEV }: any) {

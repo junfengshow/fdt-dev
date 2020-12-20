@@ -2,6 +2,7 @@
  *
  * 启动本地开发环境
  */
+import fs from 'fs';
 import WebpackDevConfig from './webpack.dev';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -71,6 +72,10 @@ class AppDev {
     // browser history
     this.app.use('*', (req: any, res: any, next: any) => {
       const filename = this.cwd + '/dist/index.html';
+      if (!fs.existsSync(filename)) {
+        res.end('no html');
+        return;
+      }
       this.compiler.outputFileSystem.readFile(
         filename,
         (err: any, result: any) => {

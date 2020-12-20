@@ -10,9 +10,9 @@ import CopyPlugin from 'copy-webpack-plugin';
 import WebpackBaseConfig from './webpack.base';
 
 class WebpackProdConfig extends WebpackBaseConfig {
-  constructor({ cwd }: { cwd?: string }) {
-    super({ cwd, ISDEV: true });
-    WebpackProdConfig.cwd = cwd;
+  constructor(params: any) {
+    super(params);
+    WebpackProdConfig.cwd = params.cwd;
     WebpackProdConfig.outputPath = this.output.path;
 
     this.mode = 'production';

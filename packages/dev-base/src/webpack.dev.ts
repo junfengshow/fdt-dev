@@ -9,8 +9,9 @@ import webpack from 'webpack';
 import WebpackBaseConfig from './webpack.base';
 
 class WebpackDevConfig extends WebpackBaseConfig {
-  constructor({ cwd }: { cwd?: string }) {
-    super({ cwd, ISDEV: true });
+  constructor(params: any) {
+    params.ISDEV = true;
+    super(params);
     this.mode = 'development';
 
     this.entry = WebpackDevConfig.setReloadConfig(this.entry);

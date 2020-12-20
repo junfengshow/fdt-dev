@@ -2,6 +2,7 @@
  *
  * 主配置文件
  */
+import fs from 'fs';
 import AppDev from './app.dev';
 import AppProd from './app.prod';
 
@@ -11,9 +12,29 @@ class AppMain {
   cwd: string = process.cwd();
   appDev: any = null;
   appProd: any = null;
+  customerConfig: any = null;
+
+  constructor() {
+    // 读取配置文件
+    this.getCustomerConfig();
+  }
+
+  getCustomerConfig() {
+    let configFilePath = this.cwd + '/.fdtrc.js';
+    if (!fs.existsSync(configFilePath)) {
+      return;
+    }
+    const config = require(configFilePath);
+
+    if (config) {
+      this.customerConfig = config;
+    }
+  }
 
   start(params: InitTypes) {
     params.cwd = this.cwd;
+    params.customerConfig = this.customerConfig;
+
     // 根据mode不同初始化不同的配置
     if (params.mode === 'development') {
       this.appDev = new AppDev(params);

@@ -1,6 +1,7 @@
 export type InitTypes = {
   mode?: string;
   cwd?: string;
+  customerConfig?: any;
 };
 
 export type OutputType = {

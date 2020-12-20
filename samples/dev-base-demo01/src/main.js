@@ -1,7 +1,8 @@
 import './main.scss';
 import A from './a.ts';
+import Person from './Person';
 const a = new A();
-console.log('kdkdekdkdkdk jd82393939');
+new Person();
 if (module.hot) {
   module.hot.accept();
 }
