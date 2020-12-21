@@ -9,5 +9,10 @@
     "**/fixtures/**",
     "**/test/**"
   ],
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "canary": true
+    }
+  }
 }

@@ -58,6 +58,8 @@ class WebpackBaseConfig extends DefaultConfig {
     this.plugins.push(
       new HtmlWebpackPlugin({
         template: htmlFilepath,
+        inject: 'body',
+        scriptLoading: 'blocking',
       }),
     );
   }
