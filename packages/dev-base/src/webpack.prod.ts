@@ -5,6 +5,7 @@
  * 所以不属于webpack的配置不能直接出现在实例上
  * 例如: cwd
  */
+import fs from 'fs';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import WebpackBaseConfig from './webpack.base';
@@ -28,6 +29,10 @@ class WebpackProdConfig extends WebpackBaseConfig {
 
     // 清除output 对应的文件及文件夹
     plugins.push(new CleanWebpackPlugin());
+    let defaultStatic = cwd + '/public';
+    if (!fs.existsSync(defaultStatic)) {
+      return;
+    }
     // 拷贝静态文件
     plugins.push(
       new CopyPlugin({
