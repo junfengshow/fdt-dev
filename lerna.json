@@ -1,7 +1,6 @@
 {
-  "mode": "independent",
   "packages": ["packages/*"],
-  "version": "0.0.12",
+  "version": "independent",
   "useWorkspaces": true,
   "ignoreChanges": [
     "**/*.md",
