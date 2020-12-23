@@ -1,0 +1,31 @@
+{
+  "name": "@fdt/dev-react",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "bin",
+    "templates"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/junfengshow/fdt-dev"
+  },
+  "homepage": "https://github.com/junfengshow/fdt-dev/tree/master/packages/dev-react#readme",
+  "gitHead": "1090153eec72591a8896918c646eef19a3b80ad7",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "webpack",
+    "awesome-typescript-loader",
+    "@fdt/dev-base",
+    "@fdt/dev-react"
+  ],
+  "dependencies": {
+    "@fdt/dev-base": "^7.12.10"
+  }
+}

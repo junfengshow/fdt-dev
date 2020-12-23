@@ -20,6 +20,7 @@ class AppDev {
     const { cwd } = params;
     this.cwd = cwd;
     this.webpackDevConfig = new WebpackDevConfig(params);
+
     this.compiler = webpack(this.webpackDevConfig);
     this.app = express();
   }

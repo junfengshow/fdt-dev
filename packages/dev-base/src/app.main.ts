@@ -9,9 +9,13 @@ import AppProd from './app.prod';
 import { InitTypes } from './typings/app.types';
 
 class AppMain {
+  // 程序运行目录
   cwd: string = process.cwd();
+  // 开发环境的配置实例
   appDev: any = null;
+  // 生产环境的配置实例
   appProd: any = null;
+  // 用户自定义配置
   customerConfig: any = null;
 
   constructor() {
@@ -19,6 +23,7 @@ class AppMain {
     this.getCustomerConfig();
   }
 
+  // 获取用户自定义配置
   getCustomerConfig() {
     let configFilePath = this.cwd + '/.fdtrc.js';
     if (!fs.existsSync(configFilePath)) {

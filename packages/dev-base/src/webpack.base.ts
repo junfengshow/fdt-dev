@@ -2,22 +2,16 @@
  *
  * webpack 基本配置
  */
-import {
-  RuleSetCondition,
-  RuleSetUse,
-  RuleSetRule,
-  Configuration,
-} from 'webpack';
 import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import DefaultConfig from './config.default';
+import WebpackDefaultConfig from './webpack.default';
+import WebpackBar from 'webpackBar';
 
-class WebpackBaseConfig extends DefaultConfig {
+class WebpackBaseConfig extends WebpackDefaultConfig {
   constructor(params: any) {
     super(params);
-    console.log('webpackBaseConfig params: ', params);
-    const { cwd, ISDEV } = params;
+    const { cwd, ISDEV, customerConfig } = params;
     // 入口配置
     this.setEntry(cwd);
     // 配置 html plugin
@@ -25,11 +19,13 @@ class WebpackBaseConfig extends DefaultConfig {
     // 配置js相关
     this.setJsConfig({ cwd });
     // 配置样式相关
-    this.setStyleConfig({ cwd, ISDEV });
+    this.setStyleConfig({ cwd, ISDEV, customerConfig });
     // 图片相关
     this.setIamgeConfig();
     // 字体相关
     this.setFontConfig();
+    // webpackbar
+    this.setWebpackBar();
   }
 
   setEntry(cwd: string) {
@@ -40,10 +36,10 @@ class WebpackBaseConfig extends DefaultConfig {
     } else if (fs.existsSync(mainBaseFile + '.ts')) {
       mainFile = mainBaseFile + '.ts';
     }
-    if (mainFile) {
-      this.entry.fdt = Array.isArray(this.entry.fdt)
-        ? this.entry.fdt.push(mainFile)
-        : [mainFile];
+    if (mainFile && this.entry) {
+      Array.isArray(this.entry.fdt)
+        ? this.entry['fdt'].push(mainFile)
+        : (this.entry.fdt = [mainFile]);
     }
   }
 
@@ -103,7 +99,7 @@ class WebpackBaseConfig extends DefaultConfig {
     });
   }
 
-  setStyleConfig({ cwd, ISDEV }: any) {
+  setStyleConfig({ cwd, ISDEV, customerConfig }: any) {
     this.plugins.push(
       new MiniCssExtractPlugin({
         filename: ISDEV ? '[name].css' : '[name].[contenthash].css',
@@ -111,41 +107,45 @@ class WebpackBaseConfig extends DefaultConfig {
       }),
     );
 
+    // options: css-loader
+    let cssLoaderOptions = {
+      esModule: false,
+      // fix：不能加auto，加了之后一直警告 export styles (as default) not found
+      // 然后模块也不能形成
+      modules: {
+        auto: true,
+        localIdentName: '[path][name]__[local]--[hash:base64:5]',
+      },
+      importLoaders: 2,
+    };
+    if (customerConfig && customerConfig.cssLoader) {
+      Object.assign(cssLoaderOptions, customerConfig.cssLoader);
+    }
+
+    // options: postcss-loader
+    let postCssLoaderOptions = {
+      postcssOptions: {
+        config: false,
+        plugins: [
+          [
+            'postcss-preset-env',
+            {
+              stage: 3,
+              browsers: 'last 3 versions',
+            },
+          ],
+        ],
+      },
+    };
+
     this.module.rules.push({
-      test: /(\.s[ac]ss$|\.css)/,
+      test: /(\.less$|\.css)/,
       exclude: /node_modules/,
       use: [
         { loader: ISDEV ? 'style-loader' : MiniCssExtractPlugin.loader },
-        {
-          loader: 'css-loader',
-          options: {
-            esModule: false,
-            // fix：不能加auto，加了之后一直警告 export styles (as default) not found
-            // 然后模块也不能形成
-            modules: {
-              localIdentName: '[path][name]__[local]--[hash:base64:5]',
-            },
-            importLoaders: 2,
-          },
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            postcssOptions: {
-              config: false,
-              plugins: [
-                [
-                  'postcss-preset-env',
-                  {
-                    stage: 3,
-                    browsers: 'last 3 versions',
-                  },
-                ],
-              ],
-            },
-          },
-        },
-        { loader: 'sass-loader' },
+        { loader: 'css-loader', options: cssLoaderOptions },
+        { loader: 'postcss-loader', options: postCssLoaderOptions },
+        { loader: 'less-loader' },
       ],
     });
   }
@@ -188,6 +188,13 @@ class WebpackBaseConfig extends DefaultConfig {
         },
       });
     });
+  }
+
+  setWebpackBar() {
+    // this.plugins.push(new WebpackBar({
+    //   color: 'orange',
+    //   name: 'fdt/build'
+    // }))
   }
 }
 export default WebpackBaseConfig;

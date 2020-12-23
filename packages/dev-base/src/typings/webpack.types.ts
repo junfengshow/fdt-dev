@@ -1,10 +1,3 @@
-import { Configuration } from 'webpack';
-export type InitTypes = {
-  mode?: string;
-  cwd?: string;
-  customerConfig?: any;
-};
-
 export type OutputType = {
   filename?: string;
   path?: string;
@@ -19,3 +12,11 @@ export type EntryObjectType = {
 export interface ModuleType {
   rules: Array<any>;
 }
+
+export type Mode = 'development' | 'production' | 'none';
+export type Resolve = {
+  extensions: Array<string>;
+  alias: {
+    [property: string]: string;
+  };
+};

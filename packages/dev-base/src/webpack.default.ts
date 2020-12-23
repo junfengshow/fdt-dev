@@ -1,21 +1,21 @@
 /**
  *
- * 项目的初始化配置
+ * webpack的初始化配置
  */
-import { OutputType } from './typings/app.types';
-type ModuleType = {
-  rules: Array<any>;
-};
+import {
+  EntryObjectType,
+  Mode,
+  OutputType,
+  Resolve,
+  ModuleType,
+} from './typings/webpack.types';
 
-type EntryType = {
-  [propName: string]: any;
-};
-
-class DefaultConfig {
+class WebpackDefaultConfig {
   // webpack 默认配置
-  entry: EntryType = {};
-  mode: 'development' | 'production' | 'none' | undefined = 'production';
+  entry: EntryObjectType = {};
+  mode: Mode = 'production';
   output: OutputType = {
+    // path: '',
     filename: '[name].[chunkhash:6].js',
     publicPath: '/',
   };
@@ -24,7 +24,7 @@ class DefaultConfig {
   module: ModuleType = {
     rules: [],
   };
-  resolve = {
+  resolve: Resolve = {
     extensions: ['.js', 'jsx', '.ts', '.tsx', '.json'],
     alias: {},
   };
@@ -36,4 +36,4 @@ class DefaultConfig {
     this.output.path = cwd + '/dist';
   }
 }
-export default DefaultConfig;
+export default WebpackDefaultConfig;
