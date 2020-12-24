@@ -1,11 +1,15 @@
+/**
+ *
+ * 程序主入口
+ */
+
 import { AppMain } from '@fdt/dev-base';
 import path from 'path';
-class Main {
+class Main extends AppMain {
   appMain: any = null;
   constructor() {
-    this.appMain = new AppMain({
-      configFile: path.resolve(__dirname, 'config.js'),
-    });
+    super();
+    this.configFilePath = path.resolve(__dirname, 'config.js');
   }
 }
 export default Main;

@@ -7,6 +7,6 @@
 // // app.appConfig.addRule()
 
 // app.dev()
-const Main = require('../../packages/dev-react').default;
+const Main = require('../../packages/dev-react/lib').default;
 const main = new Main();
-main.appMain.dev();
+main.dev();

@@ -1,17 +1,17 @@
 /**
  *
- * 主配置文件
+ * 主配置文件 入口
  */
 import fs from 'fs';
 import AppDev from './app.dev';
 import AppProd from './app.prod';
 
 import { InitTypes } from './typings/app.types';
-
+const CWD = process.cwd();
 class AppMain {
   // 程序运行目录
-  cwd: string = process.cwd();
-  configFilePath: string = '';
+  cwd: string = CWD;
+  configFilePath: string = CWD + '/.fdtrc.js';
   // 配置实例
   appConfig: any = null;
   // 用户自定义配置
@@ -19,11 +19,10 @@ class AppMain {
 
   constructor({ configFile }: any = {}) {
     // 不支持多配置文件合并
-    let _configFile = this.cwd + '/.fdtrc.js';
     if (configFile) {
-      _configFile = configFile;
+      this.configFilePath = configFile;
     }
-    this.configFilePath = _configFile;
+
     // 读取配置文件
     this.getCustomerConfig();
   }
