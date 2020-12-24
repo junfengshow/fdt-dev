@@ -9,94 +9,104 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import webpack from 'webpack';
 import express from 'express';
-class AppDev {
+import AppUtils from './app.utils';
+import defaultConfig from './app.default';
+
+class AppDev extends AppUtils {
   cwd: string = '';
   webpackDevConfig: any = null;
   app: any = null;
   compiler: any = null;
   server: any = null;
+  proxy: any = undefined;
+  port: number = defaultConfig.port;
 
   constructor(params: any) {
-    const { cwd } = params;
-    this.cwd = cwd;
-    this.webpackDevConfig = new WebpackDevConfig(params);
+    super(params);
+    const webpackConfig = new WebpackDevConfig(params);
+    super.setWebpackInstance(webpackConfig);
+    const { cwd, customerConfig } = params;
 
-    this.compiler = webpack(this.webpackDevConfig);
-    this.app = express();
+    this.cwd = cwd;
+
+    this.webpackDevConfig = webpackConfig;
+
+    if (!customerConfig) {
+      return;
+    }
+    const { proxy, port } = customerConfig;
+    if (proxy) {
+      this.proxy = proxy;
+    }
+    if (port) {
+      this.port = port;
+    }
   }
 
-  appListen() {
-    const port = 8080;
-    this.server = this.app.listen(port, () => {
-      console.log(`server is running on port=${port}`);
+  appListen({ app }: any) {
+    this.server = app.listen(this.port, () => {
+      console.log(`server is running on port=${this.port}`);
     });
   }
 
   // 使用中间件
-  setMiddlewares() {
+  setMiddlewares({ app, compiler }: any) {
     // dev-middleware
-    const compilerMiddleware = webpackDevMiddleware(this.compiler, {
+    const compilerMiddleware = webpackDevMiddleware(compiler, {
       logLevel: 'warn',
       stats: {
         colors: true,
       },
     });
-    this.app.use(compilerMiddleware);
+    app.use(compilerMiddleware);
     // hot-middleware
-    this.app.use(
-      webpackHotMiddleware(this.compiler, {
+    app.use(
+      webpackHotMiddleware(compiler, {
         path: '/__webpack_hmr',
       }),
     );
     // 同时需要在webpack的plugins中添加 webpac.HotModuleReplacementPlugin
 
     // proxy-middleware
-    this.app.use(
-      '/api',
-      createProxyMiddleware({
-        target: 'http://www.junfengshow.com',
-        pathRewrite: { '^/api': '' },
-        changeOrigin: true,
-      }),
-    );
-    this.app.use(
-      '/wages',
-      createProxyMiddleware({
-        target: 'http://www.junfengshow.com',
-        changeOrigin: true,
-      }),
-    );
 
+    const { proxy } = this;
+    if (proxy) {
+      Object.keys(proxy).forEach(key => {
+        app.use(key, createProxyMiddleware(proxy[key]));
+      });
+    }
+
+    // output
+    const outputPath = this.webpackDevConfig.output.path;
     // static
-    this.app.use(express.static(this.cwd + '/dist'));
+    app.use(express.static(outputPath));
 
     // browser history
-    this.app.use('*', (req: any, res: any, next: any) => {
-      const filename = this.cwd + '/dist/index.html';
+    app.use('*', (req: any, res: any, next: any) => {
+      const filename = outputPath + '/index.html';
       if (!fs.existsSync(filename)) {
         res.end('no html');
         return;
       }
-      this.compiler.outputFileSystem.readFile(
-        filename,
-        (err: any, result: any) => {
-          if (err) {
-            return next(err);
-          }
-          res.set('content-type', 'text/html');
-          res.send(result);
-          res.end();
-        },
-      );
+      compiler.outputFileSystem.readFile(filename, (err: any, result: any) => {
+        if (err) {
+          return next(err);
+        }
+        res.set('content-type', 'text/html');
+        res.send(result);
+        res.end();
+      });
     });
   }
 
   // 启动服务等
   start() {
+    const compiler = webpack(this.webpackDevConfig);
+    const app = express();
     // 配置中间件
-    this.setMiddlewares();
+    this.setMiddlewares({ app, compiler });
     // 监听服务端口
-    this.appListen();
+    this.appListen({ app });
   }
 }
 export default AppDev;

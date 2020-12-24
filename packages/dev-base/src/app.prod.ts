@@ -6,10 +6,15 @@
 import webpack, { Configuration, Stats } from 'webpack';
 import WebpackProdConfig from './webpack.prod';
 import { outputConfig, Logger } from './utils';
-class AppProd {
+import AppUtils from './app.utils';
+
+class AppProd extends AppUtils {
   webpackProdConfig: any = null;
   constructor(params: any) {
-    this.webpackProdConfig = new WebpackProdConfig(params);
+    super(params);
+    const webpackConfig = new WebpackProdConfig(params);
+    super.setWebpackInstance(webpackConfig);
+    this.webpackProdConfig = webpackConfig;
     // 将webpack的配置输出
     if (params.customerConfig && params.customerConfig.outputConfig) {
       outputConfig(params.cwd + '/_prod.config.json', this.webpackProdConfig);

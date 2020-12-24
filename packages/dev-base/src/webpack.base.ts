@@ -13,7 +13,7 @@ class WebpackBaseConfig extends WebpackDefaultConfig {
     super(params);
     const { cwd, ISDEV, customerConfig } = params;
     // 入口配置
-    this.setEntry(cwd);
+    this.setEntry({ cwd, customerConfig });
     // 配置 html plugin
     this.setHtmlConfig({ cwd });
     // 配置js相关
@@ -26,20 +26,36 @@ class WebpackBaseConfig extends WebpackDefaultConfig {
     this.setFontConfig();
     // webpackbar
     this.setWebpackBar();
+    // 用户自定义配置
+    this.setCustomerConfig(customerConfig);
   }
 
-  setEntry(cwd: string) {
+  setEntry({ cwd, customerConfig }: any) {
     let mainBaseFile = cwd + '/src/main';
     let mainFile;
     if (fs.existsSync(mainBaseFile + '.js')) {
       mainFile = mainBaseFile + '.js';
+    } else if (fs.existsSync(mainBaseFile + '.jsx')) {
+      mainFile = mainBaseFile + '.jsx';
     } else if (fs.existsSync(mainBaseFile + '.ts')) {
       mainFile = mainBaseFile + '.ts';
+    } else if (fs.existsSync(mainBaseFile + '.tsx')) {
+      mainFile = mainBaseFile + '.tsx';
     }
     if (mainFile && this.entry) {
       Array.isArray(this.entry.fdt)
         ? this.entry['fdt'].push(mainFile)
         : (this.entry.fdt = [mainFile]);
+    }
+    // 用户自定义的入口
+    if (customerConfig && customerConfig.entry) {
+      if (typeof customerConfig.entry === 'string') {
+        Array.isArray(this.entry.fdt)
+          ? this.entry['fdt'].push(customerConfig.entry)
+          : (this.entry.fdt = [customerConfig.entry]);
+      } else {
+        Object.assign(this.entry, customerConfig.entry);
+      }
     }
   }
 
@@ -65,7 +81,7 @@ class WebpackBaseConfig extends WebpackDefaultConfig {
       return;
     }
 
-    // js 使用babel编译 todo
+    // js 使用babel编译
     this.module.rules.push({
       test: /\.js$/,
       exclude: /node_modules/,
@@ -195,6 +211,16 @@ class WebpackBaseConfig extends WebpackDefaultConfig {
     //   color: 'orange',
     //   name: 'fdt/build'
     // }))
+  }
+
+  setCustomerConfig(customerConfig: any) {
+    if (!customerConfig) {
+      return;
+    }
+    const { rules } = customerConfig;
+    if (rules && rules.length) {
+      this.module.rules.push(...rules);
+    }
   }
 }
 export default WebpackBaseConfig;

@@ -11,21 +11,26 @@ import { InitTypes } from './typings/app.types';
 class AppMain {
   // 程序运行目录
   cwd: string = process.cwd();
-  // 开发环境的配置实例
-  appDev: any = null;
-  // 生产环境的配置实例
-  appProd: any = null;
+  configFilePath: string = '';
+  // 配置实例
+  appConfig: any = null;
   // 用户自定义配置
-  customerConfig: any = null;
+  customerConfig: any = {};
 
-  constructor() {
+  constructor({ configFile }: any = {}) {
+    // 不支持多配置文件合并
+    let _configFile = this.cwd + '/.fdtrc.js';
+    if (configFile) {
+      _configFile = configFile;
+    }
+    this.configFilePath = _configFile;
     // 读取配置文件
     this.getCustomerConfig();
   }
 
   // 获取用户自定义配置
   getCustomerConfig() {
-    let configFilePath = this.cwd + '/.fdtrc.js';
+    let configFilePath = this.configFilePath;
     if (!fs.existsSync(configFilePath)) {
       return;
     }
@@ -36,27 +41,37 @@ class AppMain {
     }
   }
 
-  start(params: InitTypes) {
+  // 创建appConfig实例
+  init = (mode: string) => {
+    const params: any = {
+      mode,
+    };
     params.cwd = this.cwd;
     params.customerConfig = this.customerConfig;
-
     // 根据mode不同初始化不同的配置
-    if (params.mode === 'development') {
-      this.appDev = new AppDev(params);
-      this.appDev.start();
-    } else if (params.mode === 'production') {
-      this.appProd = new AppProd(params);
-      this.appProd.start();
+    if (mode === 'development') {
+      if (!this.appConfig) {
+        this.appConfig = new AppDev(params);
+      }
+    } else if (mode === 'production') {
+      if (!this.appConfig) {
+        this.appConfig = new AppProd(params);
+      }
     }
+  };
+
+  start(mode: string) {
+    this.init(mode);
+    this.appConfig.start();
   }
 
   // 本地开发环境
   dev() {
-    this.start({ mode: 'development' });
+    this.start('development');
   }
   // 打包正式环境
   build() {
-    this.start({ mode: 'production' });
+    this.start('production');
   }
 }
 

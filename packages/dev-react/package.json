@@ -25,7 +25,11 @@
     "@fdt/dev-base",
     "@fdt/dev-react"
   ],
+ 
   "dependencies": {
-    "@fdt/dev-base": "^7.12.10"
+    "@fdt/dev-base": "^0.0.13-alpha.3",
+    "@babel/preset-react": "^7.12.10",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }
