@@ -5,6 +5,7 @@
 export enum CustmerConfigEnum {
   // 常规应用级配置
   outputConfig = 101,
+
   // webpack配置
   entry = 201,
   outputPath = 202,
