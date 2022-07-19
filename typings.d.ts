@@ -7,3 +7,5 @@ declare module 'express';
 declare module 'webpack-hot-middleware';
 declare module 'copy-webpack-plugin';
 declare module 'clean-webpack-plugin';
+
+declare module '@tarojs/components';
