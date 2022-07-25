@@ -28,23 +28,13 @@
   },
   "license": "MIT",
   "publishConfig": {
-    "tag": "next"
+    "tag": "next",
+    "access": "public"
   },
   "scripts": {
-    "dev": "yarn run dev:lib",
-    "dev:lib": "tsc --project ./tsconfig.build.json --watch --incremental",
-    "build": "yarn run build:rollup && yarn run build:lib",
-    "build:lib": "tsc --project ./tsconfig.build.json",
-    "build:rollup": "rollup --config ./config/rollup.config.js",
-    "prepublishOnly": "yarn run clean && yarn run build",
-    "lint": "eslint ./src --fix",
-    "lint:style": "stylelint \"src/**/*.scss\" --syntax scss",
-    "lint:style-fix": "stylelint \"src/**/*.scss\" --syntax scss --fix",
-    "test": "cross-env NODE_ENV=test && jest --coverage",
-    "test:ci": "yarn run build:h5 && yarn run test",
-    "test:analyze": "rollup --config ./config/rollup.config.analyze.js",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "clean": "rimraf .temp dist lib coverage"
+    "build": "tsc --project ./tsconfig.json",
+    "dev": "tsc --project ./tsconfig.json --watch --incremental",
+    "build:rollup": "rollup --config ./config/rollup.config.js --watch"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -76,5 +66,6 @@
     "@tarojs/react": ">=3",
     "react": ">=16.13.0",
     "react-dom": ">=16.13.0"
-  }
+  },
+  "gitHead": "a4d7b8accc389397c4aaa70f4872a0a9c3202a85"
 }

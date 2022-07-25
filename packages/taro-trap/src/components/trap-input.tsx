@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from '@tarojs/components';
-import './trap-input.less';
+import { View, Input } from '@tarojs/components';
+// import './trap-input.module.scss';
 
-const TrapInput = () => {
-  return <View className="trap-input">ld;d;e</View>;
+const TrapInput: React.FC<any> = ({ value }) => {
+  return <Input className="trap-input" placeholder="请输入" value={value} />;
 };
 export default TrapInput;
