@@ -4,7 +4,10 @@ import RollupNodeResolve from '@rollup/plugin-node-resolve';
 import RollupCommonjs from '@rollup/plugin-commonjs';
 import RollupTypescript from 'rollup-plugin-typescript2';
 import RollupCopy from 'rollup-plugin-copy';
+// import RollupCopy from 'rollup-plugin-copy-watch';
 import Package from '../package.json';
+import scss from 'rollup-plugin-scss';
+import RollupPluginStyle from './rollup-plugin-style';
 
 const resolveFile = path => NodePath.resolve(__dirname, '..', path);
 
@@ -20,7 +23,8 @@ const externalPackages = [
 export default {
   input: resolveFile(Package.source),
   watch: {
-    include: resolveFile('src/**'),
+    chokidar: true,
+    include: [resolveFile('src/**')],
   },
   output: [
     {
@@ -57,5 +61,7 @@ export default {
       ],
       copyOnce: false,
     }),
+    RollupPluginStyle({ watch: true }),
+    // scss(),
   ],
 };
